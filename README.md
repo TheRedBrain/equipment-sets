@@ -1,9 +1,6 @@
-# Fabric Example Mod
+# Equipment Sets
 
-## Setup
+This mod adds equipment sets that provide a bonus when an entity has items of a set equipped.
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+This mod is an API for mod and data pack authors. It does nothing on its own.
 
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
