@@ -1,8 +1,13 @@
 {
 	"required": true,
 	"package": "com.github.theredbrain.equipmentsets.mixin",
-	"compatibilityLevel": "JAVA_21",
+	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		"entity.LivingEntityMixin",
+		"entity.mob.MobEntityMixin",
+		"entity.player.PlayerEntityMixin",
+		"screen.PlayerScreenHandlerEquipmentSlotsMixin",
+		"screen.PlayerScreenHandlerOffHandSlotMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

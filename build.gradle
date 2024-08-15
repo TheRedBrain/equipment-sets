@@ -13,11 +13,19 @@ base {
 }
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+
+	// Trinkets
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/"
+	}
+
+	// Trinkets, Cardinal Components
+	maven {
+		name = "Ladysnake Libs"
+		url = 'https://maven.ladysnake.org/releases'
+	}
+
 }
 
 loom {
@@ -40,7 +48,10 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
+
+	// Trinkets
+	modImplementation "dev.emi:trinkets:${project.trinkets_version}"
+
 }
 
 processResources {
@@ -96,6 +107,7 @@ if (project.hasProperty('release_type')) {
 			relations {
 				requiredDependency 'cloth-config'
 				requiredDependency 'fabric-api'
+				requiredDependency 'trinkets'
 			}
 
 			mainArtifact(remapJar)
@@ -126,6 +138,7 @@ if (project.hasProperty('release_type')) {
 			// The type can either be `project` or `version`
 			required.project 'cloth-config'
 			required.project 'fabric-api'
+			required.project 'trinkets'
 		}
 	}
 
