@@ -22,6 +22,6 @@ public abstract class MobEntityMixin extends LivingEntity {
 
 	@Inject(method = "equipStack", at = @At("TAIL"))
 	public void equipmentsets$equipStack(EquipmentSlot slot, ItemStack stack, CallbackInfo ci) {
-		((CanUseEquipmentSets)this).equipmentsets$setShouldTickEquipmentSets(true);
+		((CanUseEquipmentSets) this).equipmentsets$setShouldTickEquipmentSets(true);
 	}
 }

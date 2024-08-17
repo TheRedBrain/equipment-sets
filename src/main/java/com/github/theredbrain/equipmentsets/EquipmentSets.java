@@ -3,7 +3,6 @@ package com.github.theredbrain.equipmentsets;
 import com.github.theredbrain.equipmentsets.registry.EquipmentSetsRegistry;
 import com.github.theredbrain.equipmentsets.registry.EventsRegistry;
 import net.fabricmc.api.ModInitializer;
-
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

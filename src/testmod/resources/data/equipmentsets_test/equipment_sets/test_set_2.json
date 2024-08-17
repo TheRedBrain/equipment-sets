@@ -14,7 +14,7 @@
 		{
 			"equippedItemThreshold": 4,
 			"toolTipText": "equipmentsets_test.test_set_2.threshold_4",
-			"statusEffectId": "minecraft:jump_strength",
+			"statusEffectId": "minecraft:jump_boost",
 			"statusEffectLevel": 3,
 			"isAmbient": true,
 			"showParticles": false,

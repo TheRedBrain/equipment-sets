@@ -41,9 +41,9 @@ public class ClientEventsRegistry {
 				/*config.alwaysShowFullTooltip
 				|| */
 				(!keybinding.isUnbound() && InputUtil.isKeyPressed(
-				MinecraftClient.getInstance().getWindow().getHandle(),
-				((KeyBindingAccessor) keybinding).fabric_getBoundKey().getCode()) // FIXME uses internal api package
-		);
+						MinecraftClient.getInstance().getWindow().getHandle(),
+						((KeyBindingAccessor) keybinding).fabric_getBoundKey().getCode()) // FIXME uses internal api package
+				);
 
 		Set<Identifier> identifierKeys = EquipmentSetsRegistry.registeredEquipmentSets.keySet();
 		EquipmentSet equipmentSet;

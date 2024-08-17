@@ -1,6 +1,6 @@
 {
 	"localizationString": "equipmentsets_test.test_set.name",
-	"itemTagString": "equipmentsets_test:test_set_armour",
+	"itemTagString": "equipmentsets_test:test_set_items",
 	"setEffects": [
 		{
 			"equippedItemThreshold": 2,

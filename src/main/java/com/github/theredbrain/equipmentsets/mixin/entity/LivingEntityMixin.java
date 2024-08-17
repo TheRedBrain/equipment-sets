@@ -1,6 +1,5 @@
 package com.github.theredbrain.equipmentsets.mixin.entity;
 
-import com.github.theredbrain.equipmentsets.EquipmentSets;
 import com.github.theredbrain.equipmentsets.data.EquipmentSet;
 import com.github.theredbrain.equipmentsets.entity.CanUseEquipmentSets;
 import com.github.theredbrain.equipmentsets.entity.CustomDataHandlers;
@@ -42,13 +41,17 @@ import java.util.function.Predicate;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements CanUseEquipmentSets {
 
-	@Shadow public abstract boolean removeStatusEffect(StatusEffect type);
+	@Shadow
+	public abstract boolean removeStatusEffect(StatusEffect type);
 
-	@Shadow public abstract boolean addStatusEffect(StatusEffectInstance effect);
+	@Shadow
+	public abstract boolean addStatusEffect(StatusEffectInstance effect);
 
-	@Shadow public abstract ItemStack getEquippedStack(EquipmentSlot slot);
+	@Shadow
+	public abstract ItemStack getEquippedStack(EquipmentSlot slot);
 
-	@Shadow public abstract boolean hasStatusEffect(StatusEffect effect);
+	@Shadow
+	public abstract boolean hasStatusEffect(StatusEffect effect);
 
 	@Unique
 	private boolean shouldTickEquipmentSets = false;
@@ -83,7 +86,7 @@ public abstract class LivingEntityMixin extends Entity implements CanUseEquipmen
 		for (int i = 0; i < sideEntrancesSize; i++) {
 			String key = nbt.getString("key_" + i);
 			int counter = nbt.getInt("counter_" + i);
-				newEquipmentSetCounters.put(key, counter);
+			newEquipmentSetCounters.put(key, counter);
 		}
 
 		((CanUseEquipmentSets) this).equipmentsets$setEquipmentSetCounters(newEquipmentSetCounters);
