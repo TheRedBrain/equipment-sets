@@ -1,0 +1,24 @@
+{
+	"localizationString": "equipmentsets_test.test_set_2.name",
+	"itemTagString": "equipmentsets_test:test_set_2_items",
+	"setEffects": [
+		{
+			"equippedItemThreshold": 2,
+			"toolTipText": "equipmentsets_test.test_set_2.threshold_2",
+			"statusEffectId": "minecraft:regeneration",
+			"statusEffectLevel": 0,
+			"isAmbient": true,
+			"showParticles": false,
+			"showIcon": true
+		},
+		{
+			"equippedItemThreshold": 4,
+			"toolTipText": "equipmentsets_test.test_set_2.threshold_4",
+			"statusEffectId": "minecraft:jump_strength",
+			"statusEffectLevel": 3,
+			"isAmbient": true,
+			"showParticles": false,
+			"showIcon": true
+		}
+	]
+}

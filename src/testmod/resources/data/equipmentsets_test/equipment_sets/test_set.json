@@ -1,0 +1,24 @@
+{
+	"localizationString": "equipmentsets_test.test_set.name",
+	"itemTagString": "equipmentsets_test:test_set_armour",
+	"setEffects": [
+		{
+			"equippedItemThreshold": 2,
+			"toolTipText": "equipmentsets_test.test_set.threshold_2",
+			"statusEffectId": "minecraft:glowing",
+			"statusEffectLevel": 0,
+			"isAmbient": true,
+			"showParticles": false,
+			"showIcon": true
+		},
+		{
+			"equippedItemThreshold": 4,
+			"toolTipText": "equipmentsets_test.test_set.threshold_4",
+			"statusEffectId": "minecraft:strength",
+			"statusEffectLevel": 0,
+			"isAmbient": true,
+			"showParticles": false,
+			"showIcon": true
+		}
+	]
+}

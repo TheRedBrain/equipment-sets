@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"id": "equipmentsets_test",
+	"version": "${version}",
+	"name": "Test Mod",
+	"description": "Test Mod for Equipment Sets",
+	"authors": [],
+	"contact": {},
+	"license": "None",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.github.theredbrain.equipmentsets_test.EquipmentSetsTest"
+		],
+		"client": [
+			"com.github.theredbrain.equipmentsets_test.EquipmentSetsClientTest"
+		]
+	},
+	"mixins": [],
+	"depends": {}
+}

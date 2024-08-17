@@ -1,0 +1,9 @@
+{
+	"equipmentsets_test.test_set.name": "Set: Shiny Iron",
+	"equipmentsets_test.test_set.threshold_2": "2 pieces: Glowing",
+	"equipmentsets_test.test_set.threshold_4": "4 pieces: Strength",
+
+	"equipmentsets_test.test_set_2.name": "Set: Testing",
+	"equipmentsets_test.test_set_2.threshold_2": "2 pieces: Regeneration",
+	"equipmentsets_test.test_set_2.threshold_4": "4 pieces: Jump Strength"
+}
