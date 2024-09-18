@@ -19,7 +19,8 @@ import java.util.Map;
 public class EquipmentSetsRegistry {
 
 	public static Map<Identifier, EquipmentSet> registeredEquipmentSets = new HashMap<>();
-	private static final Type registeredEquipmentSetsFileFormat = new TypeToken<EquipmentSet>() {}.getType();
+	private static final Type registeredEquipmentSetsFileFormat = new TypeToken<EquipmentSet>() {
+	}.getType();
 
 	public static void init() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(

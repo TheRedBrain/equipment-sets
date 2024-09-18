@@ -11,6 +11,7 @@ import net.fabricmc.api.ClientModInitializer;
 
 public class EquipmentSetsClient implements ClientModInitializer {
 	public static ConfigHolder<ClientConfig> clientConfigHolder;
+
 	@Override
 	public void onInitializeClient() {
 		// Config

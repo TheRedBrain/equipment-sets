@@ -1,6 +1,5 @@
 package com.github.theredbrain.equipmentsets.registry;
 
-import com.github.theredbrain.equipmentsets.EquipmentSets;
 import com.github.theredbrain.equipmentsets.EquipmentSetsClient;
 import com.github.theredbrain.equipmentsets.config.ClientConfig;
 import com.github.theredbrain.equipmentsets.data.EquipmentSet;
@@ -40,11 +39,11 @@ public class ClientEventsRegistry {
 		Map<String, Integer> equipmentSetCounters = new HashMap<>(((CanUseEquipmentSets) clientPlayer).equipmentsets$getEquipmentSetCounters());
 		KeyBinding keybinding = MinecraftClient.getInstance().options.sneakKey;
 		boolean showDetails =
-				clientConfig.always_show_full_equipment_Set_tooltips
-				||
-				(!keybinding.isUnbound() && InputUtil.isKeyPressed(
-						MinecraftClient.getInstance().getWindow().getHandle(),
-						((KeyBindingAccessor) keybinding).fabric_getBoundKey().getCode()) // FIXME uses internal api package
+				clientConfig.always_show_full_equipment_Set_tooltips || (!keybinding.isUnbound() &&
+						InputUtil.isKeyPressed(
+								MinecraftClient.getInstance().getWindow().getHandle(),
+								((KeyBindingAccessor) keybinding).fabric_getBoundKey().getCode()
+						) // FIXME uses internal api package
 				);
 
 		Set<Identifier> identifierKeys = EquipmentSetsRegistry.registeredEquipmentSets.keySet();
