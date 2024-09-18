@@ -13,8 +13,13 @@ base {
 }
 
 repositories {
+	// Cloth Config
+	maven {
+		url "https://maven.shedaniel.me/"
+	}
 
-	// Trinkets
+
+	// Trinkets, Cloth Config, Mod Menu
 	maven {
 		name = "TerraformersMC"
 		url = "https://maven.terraformersmc.com/"
@@ -90,6 +95,12 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+	// Cloth Config
+	modImplementation ("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}")
+
+	// Mod Menu
+	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
+
 	// Trinkets
 	modImplementation "dev.emi:trinkets:${project.trinkets_version}"
 
@@ -102,14 +113,15 @@ dependencies {
 
 processResources {
 	inputs.property "version", project.version
+	filteringCharset "UTF-8"
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand(project.properties)
 	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+	it.options.release = 21
 }
 
 java {
@@ -118,8 +130,8 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
@@ -153,7 +165,8 @@ if (project.hasProperty('release_type')) {
 			relations {
 				requiredDependency 'cloth-config'
 				requiredDependency 'fabric-api'
-				requiredDependency 'trinkets'
+				optionalDependency 'modmenu'
+				optionalDependency 'trinkets'
 			}
 
 			mainArtifact(remapJar)
@@ -184,7 +197,8 @@ if (project.hasProperty('release_type')) {
 			// The type can either be `project` or `version`
 			required.project 'cloth-config'
 			required.project 'fabric-api'
-			required.project 'trinkets'
+			optional.project 'modmenu'
+			optional.project 'trinkets'
 		}
 	}
 

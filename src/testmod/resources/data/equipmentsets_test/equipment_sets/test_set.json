@@ -1,24 +1,24 @@
 {
-	"localizationString": "equipmentsets_test.test_set.name",
-	"itemTagString": "equipmentsets_test:test_set_items",
-	"setEffects": [
+	"localization_string": "equipmentsets_test.test_set.name",
+	"item_tag_string": "equipmentsets_test:test_set_items",
+	"set_effects": [
 		{
-			"equippedItemThreshold": 2,
-			"toolTipText": "equipmentsets_test.test_set.threshold_2",
-			"statusEffectId": "minecraft:glowing",
-			"statusEffectLevel": 0,
-			"isAmbient": true,
-			"showParticles": false,
-			"showIcon": true
+			"equipped_item_threshold": 2,
+			"tooltip_text": "equipmentsets_test.test_set.threshold_2",
+			"status_effect_id": "minecraft:glowing",
+			"status_effect_level": 0,
+			"is_ambient": true,
+			"show_particles": false,
+			"show_icon": true
 		},
 		{
-			"equippedItemThreshold": 4,
-			"toolTipText": "equipmentsets_test.test_set.threshold_4",
-			"statusEffectId": "minecraft:strength",
-			"statusEffectLevel": 0,
-			"isAmbient": true,
-			"showParticles": false,
-			"showIcon": true
+			"equipped_item_threshold": 4,
+			"tooltip_text": "equipmentsets_test.test_set.threshold_4",
+			"status_effect_id": "minecraft:strength",
+			"status_effect_level": 0,
+			"is_ambient": true,
+			"show_particles": false,
+			"show_icon": true
 		}
 	]
 }

@@ -1,46 +1,55 @@
 package com.github.theredbrain.equipmentsets.entity;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.encoding.StringEncoding;
+import net.minecraft.network.encoding.VarInts;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class CustomDataHandlers {
+	private static final PacketCodec<ByteBuf, Map<String, Integer>> STRING_INT_MAP = new PacketCodec<>() {
+		public Map<String, Integer> decode(ByteBuf byteBuf) {
+			int i = VarInts.read(byteBuf);
+			Map<String, Integer> propertyMap = new HashMap<>();
 
-	public static final TrackedDataHandler<Map<String, Integer>> STRING_INTEGER_MAP = new TrackedDataHandler.ImmutableHandler<Map<String, Integer>>() {
-		public void write(PacketByteBuf packetByteBuf, Map<String, Integer> map) {
-			packetByteBuf.writeMap(map, new PacketByteBuf.PacketWriter<String>() {
-				@Override
-				public void accept(PacketByteBuf packetByteBuf, String string) {
-					packetByteBuf.writeString(string);
-				}
-			}, new PacketByteBuf.PacketWriter<Integer>() {
-				@Override
-				public void accept(PacketByteBuf packetByteBuf, Integer integer) {
-					packetByteBuf.writeInt(integer);
-				}
-			});
+			for (int j = 0; j < i; j++) {
+				String string = StringEncoding.decode(byteBuf, Integer.MAX_VALUE);
+				int integer = VarInts.read(byteBuf);
+				propertyMap.put(string, integer);
+			}
+
+			return propertyMap;
 		}
 
-		public Map<String, Integer> read(PacketByteBuf packetByteBuf) {
-			return packetByteBuf.readMap(
-					new PacketByteBuf.PacketReader<String>() {
-						@Override
-						public String apply(PacketByteBuf packetByteBuf) {
-							return packetByteBuf.readString();
-						}
-					}, new PacketByteBuf.PacketReader<Integer>() {
-						@Override
-						public Integer apply(PacketByteBuf packetByteBuf) {
-							return packetByteBuf.readInt();
-						}
-					}
-			);
+		public void encode(ByteBuf byteBuf, Map<String, Integer> stringIntMap) {
+			VarInts.write(byteBuf, stringIntMap.size());
+
+			for (var entry : stringIntMap.entrySet()) {
+				StringEncoding.encode(byteBuf, entry.getKey(), Integer.MAX_VALUE);
+				VarInts.write(byteBuf, entry.getValue());
+			}
 		}
 	};
 
+	public static final TrackedDataHandler<Map<String, Integer>> STRING_INTEGER_MAP;
+
 	static {
+
+		STRING_INTEGER_MAP = new TrackedDataHandler.ImmutableHandler<>() {
+			@Override
+			public PacketCodec<? super RegistryByteBuf, Map<String, Integer>> codec() {
+				return STRING_INT_MAP;
+			}
+
+			public Map<String, Integer> copy(Map<String, Integer> map) {
+				return new HashMap<>(map);
+			}
+		};
 		TrackedDataHandlerRegistry.register(STRING_INTEGER_MAP);
 	}
 }

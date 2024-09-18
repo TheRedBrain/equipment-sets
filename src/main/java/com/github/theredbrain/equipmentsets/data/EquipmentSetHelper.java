@@ -9,8 +9,7 @@ import java.lang.reflect.Type;
 
 public class EquipmentSetHelper {
 
-	private static Type registeredEquipmentSetsFileFormat = new TypeToken<EquipmentSet>() {
-	}.getType();
+	private static final Type registeredEquipmentSetsFileFormat = new TypeToken<EquipmentSet>() {}.getType();
 
 	public static EquipmentSet decode(Reader reader) {
 		var gson = new Gson();
@@ -19,9 +18,7 @@ public class EquipmentSetHelper {
 	}
 
 	public static EquipmentSet decode(JsonReader json) {
-		var gson = new Gson();
-		EquipmentSet equipmentSet = gson.fromJson(json, registeredEquipmentSetsFileFormat);
-		return equipmentSet;
+		return new Gson().fromJson(json, registeredEquipmentSetsFileFormat);
 	}
 
 	public static String encode(EquipmentSet equipmentSet) {

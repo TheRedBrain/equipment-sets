@@ -1,11 +1,10 @@
 package com.github.theredbrain.equipmentsets.mixin.entity;
 
+import com.github.theredbrain.equipmentsets.EquipmentSets;
 import com.github.theredbrain.equipmentsets.data.EquipmentSet;
 import com.github.theredbrain.equipmentsets.entity.CanUseEquipmentSets;
 import com.github.theredbrain.equipmentsets.entity.CustomDataHandlers;
 import com.github.theredbrain.equipmentsets.registry.EquipmentSetsRegistry;
-import dev.emi.trinkets.api.TrinketComponent;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -19,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
@@ -42,38 +42,26 @@ import java.util.function.Predicate;
 public abstract class LivingEntityMixin extends Entity implements CanUseEquipmentSets {
 
 	@Shadow
-	public abstract boolean removeStatusEffect(StatusEffect type);
-
-	@Shadow
 	public abstract boolean addStatusEffect(StatusEffectInstance effect);
 
 	@Shadow
 	public abstract ItemStack getEquippedStack(EquipmentSlot slot);
 
-	@Shadow
-	public abstract boolean hasStatusEffect(StatusEffect effect);
-
-	@Unique
-	private boolean shouldTickEquipmentSets = false;
-
 	@Unique
 	private static final TrackedData<Map<String, Integer>> EQUIPMENT_SET_COUNTERS = DataTracker.registerData(LivingEntity.class, CustomDataHandlers.STRING_INTEGER_MAP);
-
-//	@Unique
-//	private Map<Identifier, Integer> equipmentSetCounters = new HashMap<>();
 
 	public LivingEntityMixin(EntityType<?> type, World world) {
 		super(type, world);
 	}
 
 	@Inject(method = "initDataTracker", at = @At("TAIL"))
-	private void equipmentsets$initDataTracker(CallbackInfo ci) {
-		dataTracker.startTracking(EQUIPMENT_SET_COUNTERS, new HashMap<>());
+	private void equipmentsets$initDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
+		builder.add(EQUIPMENT_SET_COUNTERS, new HashMap<>());
 	}
 
 	@Inject(method = "tick", at = @At("TAIL"))
 	public void equipmentsets$tick(CallbackInfo ci) {
-		if (!this.getWorld().isClient && this.shouldTickEquipmentSets) {
+		if (!this.getWorld().isClient && this.getWorld().getTime() % 80L == 0L) {
 			this.equipmentsets$tickEquipmentSets();
 		}
 	}
@@ -81,7 +69,7 @@ public abstract class LivingEntityMixin extends Entity implements CanUseEquipmen
 	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
 	public void equipmentsets$readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
 
-		int sideEntrancesSize = nbt.getInt("sideEntrancesSize");
+		int sideEntrancesSize = nbt.getInt("newEquipmentSetCountersSize");
 		Map<String, Integer> newEquipmentSetCounters = new HashMap<>(Map.of());
 		for (int i = 0; i < sideEntrancesSize; i++) {
 			String key = nbt.getString("key_" + i);
@@ -96,9 +84,9 @@ public abstract class LivingEntityMixin extends Entity implements CanUseEquipmen
 	public void equipmentsets$writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
 		Map<String, Integer> newEquipmentSetCounters = ((CanUseEquipmentSets) this).equipmentsets$getEquipmentSetCounters();
 		List<String> keyList = newEquipmentSetCounters.keySet().stream().toList();
-		int sideEntrancesSize = newEquipmentSetCounters.keySet().size();
-		nbt.putInt("sideEntrancesSize", sideEntrancesSize);
-		for (int i = 0; i < sideEntrancesSize; i++) {
+		int newEquipmentSetCountersSize = newEquipmentSetCounters.keySet().size();
+		nbt.putInt("newEquipmentSetCountersSize", newEquipmentSetCountersSize);
+		for (int i = 0; i < newEquipmentSetCountersSize; i++) {
 			String key = keyList.get(i);
 			nbt.putString("key_" + i, key);
 			nbt.putInt("counter_" + i, newEquipmentSetCounters.get(key));
@@ -114,7 +102,7 @@ public abstract class LivingEntityMixin extends Entity implements CanUseEquipmen
 		EquipmentSet equipmentSet;
 		for (Identifier key : identifierKeys) {
 			equipmentSet = EquipmentSetsRegistry.registeredEquipmentSets.get(key);
-			TagKey<Item> itemTag = TagKey.of(RegistryKeys.ITEM, new Identifier(equipmentSet.itemTagString()));
+			TagKey<Item> itemTag = TagKey.of(RegistryKeys.ITEM, Identifier.of(equipmentSet.item_tag_string()));
 			equipmentSetItemTags.add(new Pair<>(key, itemTag));
 		}
 
@@ -129,52 +117,26 @@ public abstract class LivingEntityMixin extends Entity implements CanUseEquipmen
 		for (String key : equipmentSetKeys) {
 			int setCounter = this.equipmentsets$getEquipmentSetCounters().get(key);
 			equipmentSet = EquipmentSetsRegistry.registeredEquipmentSets.get(Identifier.tryParse(key));
-			List<StatusEffect> effectsToBeRemoved = new ArrayList<>();
-			StatusEffect newSetEffect = null;
-			StatusEffect removeThisEffect = null;
+			List<StatusEffectInstance> newSetEffects = new ArrayList<>();
 			int currentThreshold = 0;
-			int statusEffectLevel = 0;
-			boolean showParticles = false;
-			boolean showIcon = false;
-			for (EquipmentSet.SetEffect setEffect : equipmentSet.setEffects()) {
-				int f = setEffect.equippedItemThreshold();
-//					Optional<RegistryEntry.Reference<StatusEffect>> optionalStatusEffect = Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(setEffect.statusEffectId()));
-				StatusEffect statusEffect = Registries.STATUS_EFFECT.get(Identifier.tryParse(setEffect.statusEffectId()));
+			for (EquipmentSet.SetEffect setEffect : equipmentSet.set_effects()) {
+				int f = setEffect.equipped_item_threshold();
+				Optional<RegistryEntry.Reference<StatusEffect>> statusEffect = Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(setEffect.status_effect_id()));
 				if (setCounter >= f && f >= currentThreshold) {
-//						if (optionalStatusEffect.isPresent()) {
-					if (statusEffect != null) {
-
-						if (newSetEffect != null) {
-							removeThisEffect = newSetEffect;
+					if (statusEffect.isPresent()) {
+						if (!equipmentSet.stack_effects()) {
+							newSetEffects.clear();
 						}
-						newSetEffect = statusEffect;
-						statusEffectLevel = setEffect.statusEffectLevel();
-						showParticles = setEffect.showParticles();
-						showIcon = setEffect.showIcon();
+						newSetEffects.add(new StatusEffectInstance(statusEffect.get(), 120, setEffect.status_effect_level(), true, setEffect.show_particles(), setEffect.show_icon()));
 					}
 					currentThreshold = f;
-				} else {
-//						if (optionalStatusEffect.isPresent()) {
-					if (statusEffect != null) {
-						removeThisEffect = statusEffect;
-					}
-				}
-				if (removeThisEffect != null) {
-					effectsToBeRemoved.add(removeThisEffect);
 				}
 			}
 
-			if (newSetEffect != null) {
-				if (!this.hasStatusEffect(newSetEffect)) {
-					this.addStatusEffect(new StatusEffectInstance(newSetEffect, -1, statusEffectLevel, true, showParticles, showIcon));
-				}
-			}
-
-			for (StatusEffect statusEffect : effectsToBeRemoved) {
-				this.removeStatusEffect(statusEffect);
+			for (StatusEffectInstance instance : newSetEffects) {
+				this.addStatusEffect(instance);
 			}
 		}
-		this.shouldTickEquipmentSets = false;
 	}
 
 	@Unique
@@ -183,10 +145,8 @@ public abstract class LivingEntityMixin extends Entity implements CanUseEquipmen
 
 		Predicate<ItemStack> predicate = stack -> stack.isIn(itemTag);
 
-		Optional<TrinketComponent> trinkets = TrinketsApi.getTrinketComponent((LivingEntity) (Object) this);
-		if (trinkets.isPresent()) {
-			counter = trinkets.get().getEquipped(predicate).size();
-		}
+		counter = counter + EquipmentSets.getEquippedTrinketsAmount(((LivingEntity) (Object) this), predicate);
+
 		if (predicate.test(this.getEquippedStack(EquipmentSlot.MAINHAND))) {
 			++counter;
 		}
@@ -206,11 +166,6 @@ public abstract class LivingEntityMixin extends Entity implements CanUseEquipmen
 			++counter;
 		}
 		return counter;
-	}
-
-	@Override
-	public void equipmentsets$setShouldTickEquipmentSets(boolean shouldTickEquipmentSets) {
-		this.shouldTickEquipmentSets = shouldTickEquipmentSets;
 	}
 
 	@Override

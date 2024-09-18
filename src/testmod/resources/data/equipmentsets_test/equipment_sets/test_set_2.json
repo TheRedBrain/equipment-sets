@@ -1,24 +1,24 @@
 {
-	"localizationString": "equipmentsets_test.test_set_2.name",
-	"itemTagString": "equipmentsets_test:test_set_2_items",
-	"setEffects": [
+	"localization_string": "equipmentsets_test.test_set_2.name",
+	"item_tag_string": "equipmentsets_test:test_set_2_items",
+	"set_effects": [
 		{
-			"equippedItemThreshold": 2,
-			"toolTipText": "equipmentsets_test.test_set_2.threshold_2",
-			"statusEffectId": "minecraft:regeneration",
-			"statusEffectLevel": 0,
-			"isAmbient": true,
-			"showParticles": false,
-			"showIcon": true
+			"equipped_item_threshold": 2,
+			"tooltip_text": "equipmentsets_test.test_set_2.threshold_2",
+			"status_effect_id": "minecraft:regeneration",
+			"status_effect_level": 0,
+			"is_ambient": true,
+			"show_particles": false,
+			"show_icon": true
 		},
 		{
-			"equippedItemThreshold": 4,
-			"toolTipText": "equipmentsets_test.test_set_2.threshold_4",
-			"statusEffectId": "minecraft:jump_boost",
-			"statusEffectLevel": 3,
-			"isAmbient": true,
-			"showParticles": false,
-			"showIcon": true
+			"equipped_item_threshold": 4,
+			"tooltip_text": "equipmentsets_test.test_set_2.threshold_4",
+			"status_effect_id": "minecraft:jump_boost",
+			"status_effect_level": 3,
+			"is_ambient": true,
+			"show_particles": false,
+			"show_icon": true
 		}
 	]
 }

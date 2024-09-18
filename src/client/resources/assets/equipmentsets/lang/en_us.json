@@ -1,3 +1,9 @@
 {
-	"equipmentsets.tooltip.detail_hint": "Press %s for details"
+	"equipmentsets.tooltip.detail_hint": "Press %s for details",
+
+	"text.autoconfig.equipmentsets.title": "Equipment Sets",
+
+	"text.autoconfig.equipmentsets.category.generalClientConfig": "General",
+
+	"text.autoconfig.equipmentsets.option.generalClientConfig.always_show_full_equipment_Set_tooltips": "Always show full equipment set tooltips"
 }

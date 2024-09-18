@@ -1,5 +1,6 @@
 package com.github.theredbrain.equipmentsets.registry;
 
+import com.github.theredbrain.equipmentsets.network.packet.EquipmentSetsSyncPacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -9,8 +10,8 @@ public class ClientPacketRegistry {
 
 	public static void init() {
 
-		ClientPlayNetworking.registerGlobalReceiver(ServerPacketRegistry.SYNC_EQUIPMENT_SETS, (client, handler, buffer, responseSender) -> { // TODO convert to packet
-			EquipmentSetsRegistry.decodeRegistry(buffer);
+		ClientPlayNetworking.registerGlobalReceiver(EquipmentSetsSyncPacket.PACKET_ID, (payload, context) -> {
+			EquipmentSetsRegistry.registeredEquipmentSets = payload.registeredEquipmentSets();
 		});
 	}
 }
